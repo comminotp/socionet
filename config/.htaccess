@@ -1,0 +1,2 @@
+# Refuse l'accès à ce dossier et ses sous-dossiers
+Deny from all
