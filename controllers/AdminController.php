@@ -2,6 +2,8 @@
 
 require_once 'framework/Controller.php';
 require_once 'models/LanguagesModel.php';
+require_once 'models/InstitutionsModel.php';
+require_once 'models/PhonesModel.php';
 
 /**
  * Controleur pour les langues
@@ -106,4 +108,54 @@ class AdminController extends Controller {
         }  
         $this->redirect('listLanguages');
     }
+    
+    
+     public function editPhoneNumber() {
+        $institutionsModel = new InstitutionsModel();
+        $phoneNumberModel = new PhonesModel();
+        $institutions = $institutionsModel->GetInstitutes();
+        // si l'id est existant, il fait référence à un enregistrement existant
+        // sinon il s'agit de l'édition d'un nouvel enregistrement (données initiales=null)
+        if ($this->request->paramExists('id')) {
+          //$language = $languagesModel->getLanguage($this->request->getParam('id'));
+        } else {
+            $phoneNumber = null;
+        }
+        
+          
+        $this->buildView(array('institutions'=>$institutions, 'phoneNumber'=>$phoneNumber));
+    }
+    
+    public function savePhoneNumber() {
+        // Récupération des données du formulaire
+        $phoneNumber['idPhone'] = $this->request->paramExists('idPhone') ? 
+                trim(strtolower($this->request->getParam('idPhone'))) : null;
+        $phoneNumber['PhoneNumber'] = $this->request->paramExists('PhoneNumber') ? 
+                $this->request->getParam('PhoneNumber') : '';
+        $phoneNumber['idInstitution']= $this->request->paramExists('idInstitution') ? 
+                trim($this->request->getParam('idInstitution')) : null;
+
+        
+       
+        // Validation du champ PhoneNumber
+        if (empty($phoneNumber['PhoneNumber'])) {
+            $errors['PhoneNumber'] = "Le numéro de téléphone ne peut pas être vide";
+        }
+        
+        // Pas d'erreur, on enregistre
+        if (empty($errors)) {
+            $phoneModel = new PhonesModel();
+            $phoneModel->addPhone(
+                    $phoneNumber['PhoneNumber'], 
+                    $phoneNumber['idInstitution']); 
+            $this->buildView($phoneNumber);
+        } else {
+            // Sinon, on réaffiche le formulaire d'édition
+            $institutionsModel = new InstitutionsModel();
+            $institutions = $institutionsModel->GetInstitutes();
+            $this->buildAlternateView('editPhoneNumber',array('institutions'=>$institutions,'phoneNumber'=>$phoneNumber, 'errors'=>$errors));
+        }
+        
+    }
 }
+
