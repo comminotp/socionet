@@ -52,5 +52,14 @@ abstract class Model {
         }
         return self::$db;
     }
+    
+    /**
+     * Retourne l'id du dernier enregistrement créé par cette connexion
+     * @return mixed id du dernier enregistrement
+     */
+    
+    protected function lastInsertId() {
+        return self::getDB()->lastInsertId();
+    }
 
 }
