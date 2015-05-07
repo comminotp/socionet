@@ -1,0 +1,43 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7 mai 2015, 16:22:52
+    Author     : BERTRANDN_INFO
+*/
+/*Mise au centre du nom de l'institution*/
+.title {
+	text-align: center;
+}
+
+/*Définis une taille*/
+.image-place {
+	height: 250px;
+	width: 250px;
+	padding: 70px;
+}
+
+/*Réduis de moitié l'image de l'itinéraire*/
+.image-map {
+	height: 50%;
+	width: 50%;
+}
+
+.image-td {
+	text-align: center;
+}
+
+.infos {
+	width:100%;	
+}
+
+.images {
+	width: 100%;
+}
+
+.info-schedules {
+	width: 50%;
+}
+

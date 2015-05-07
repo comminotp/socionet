@@ -12,4 +12,9 @@ class HomeController extends Controller {
     public function index() {
         $this->buildView();
     }
+    
+    public function description_print() {
+        $this->buildView();
+        
+    }
 }

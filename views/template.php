@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <base href="<?php echo $webRoot ?>" >
         <link rel="stylesheet" href="contents/css/style.css" />
+        <link rel="stylesheet" media="print" href="contents/css/description_print.css" />
         <title><?php echo $title ?></title>
         <?php
             if(isset($_COOKIE['isTerminal']) && $_COOKIE['isTerminal']) {
