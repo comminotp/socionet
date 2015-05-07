@@ -2,6 +2,7 @@
 
 require_once 'framework/Controller.php';
 require_once 'models/LanguagesModel.php';
+require_once 'models/SchedulesModel.php';
 
 /**
  * Controleur pour les langues
@@ -105,5 +106,61 @@ class AdminController extends Controller {
            
         }  
         $this->redirect('listLanguages');
+    }
+    
+    //==========================================================================
+    
+    /**
+     * Construction du formulaire d'édition (ajout et modif) d'un horaire
+     */
+    public function editSchedule() {
+        // Verifier les paramètres pour savoir si on est train de créer
+        // un nouvel horaire ou en train d'en editer un
+        
+        $model = new SchedulesModel();
+        
+        $lastID = $model->insertScheduleDescription('<idlanguage>', '<description>');
+        
+        $this->buildView();
+    }
+    
+    /**
+     * Traitment des données envoyée par le formulaire de editSchedule
+     */
+    public function saveSchedule() {
+        
+        $arrayDays = array(
+	'Monday'  => (isset($_POST['day1']) ? true : false),
+	'Tuesday' => (isset($_POST['day2']) ? true : false),
+	'Wednesday' => (isset($_POST['day3']) ? true : false),
+	'Thursday' => (isset($_POST['day4'])? true : false),
+	'Friday' => (isset($_POST['day5']) ? true : false),
+	'Saturday' => (isset($_POST['day6']) ? true : false),
+	'Sunday' => (isset($_POST['day7'])? true : false)
+        );
+	
+        $stringDays = implode(",",array_keys($arrayDays, true));
+        if(isset($_POST['AllDay'])) {
+	$startTime = "NULL";
+	$endTime = "NULL";
+        }
+        else {
+	$startTime = isset($_POST['TimeBegin']) ? $_POST['TimeBegin'] : null;
+	$endTime = isset($_POST['TimeEnd']) ? $_POST['TimeEnd'] : null;
+        }
+
+        if(isset($_POST['AllYear'])) {
+                $startDate = "NULL";
+                $endDate = "NULL";
+        }
+        else {
+                $startDate = isset($_POST['DateBegin']) ? $_POST['DateBegin'] : null;
+                $endDate = isset($_POST['DateEnd']) ? $_POST['DateEnd'] : null;
+        }
+
+        $description = isset($_POST['description']) ? $_POST['description'] : null;
+        
+        $model = new SchedulesModel();
+        $model->insertSchedule($idInstitution, $stringDays, $startTime, $endTime, $startDate, $endDate, $description, $idLanguage);
     }
 }
