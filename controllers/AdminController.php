@@ -2,6 +2,9 @@
 
 require_once 'framework/Controller.php';
 require_once 'models/LanguagesModel.php';
+require_once 'models/TextsModel.php';
+require_once 'models/TranslationsModel.php';
+require_once 'views/htmlTools.php';
 
 /**
  * Controleur pour les langues
@@ -105,5 +108,57 @@ class AdminController extends Controller {
            
         }  
         $this->redirect('listLanguages');
+    }
+    
+    /**
+     * Fonction pour l'édition d'une tradutcion.
+     *
+     * @author Jeff Muraro
+     */
+
+    public function editTranslation() {
+        $languagesModel = new LanguagesModel();
+        $textsModel = new TextsModel();
+
+        $languages =  AssociativeArray($languagesModel->getLanguages(),'idLanguage','LanguageName');
+        $texts = AssociativeArray($textsModel->getTexts(), 'idText', 'ShortDescription');
+
+        $this->buildView(array('languages'=>$languages,'texts'=>$texts));
+
+    }
+
+    /**
+     * Fonction pour sauver l'édition d'une traduction.
+     *
+     * @author Jeff Muraro
+     */
+
+    public function saveTranslation() {
+        $translation['idLanguage'] = $this->request->paramExists('idLanguage') ?
+            trim(strtolower($this->request->getParam('idLanguage'))) : '';
+        $translation['idText'] = $this->request->paramExists('idText') ?
+            $this->request->getParam('idText') : '';
+        $translation['Translation']= $this->request->paramExists('Translation') ?
+            trim($this->request->getParam('Translation')) : '';
+
+        $languagesModel = new LanguagesModel();
+        if ($languagesModel->getLanguage($translation['idLanguage'])===null) {
+            $errors['idLanguage'] = "L'id de la langue est invalide...";
+        }
+
+        if ($languagesModel->getLanguage($translation['idText'])===null) {
+            $errors['idText'] = "Le text sélectionner est invalide";
+        }
+
+        if (empty($errors)) {
+            $translationModel = new TranslationsModel();
+            $translationModel->insertTranslation(
+                $translation['idLanguage'],
+                $translation['idText'],
+                $translation['Translation']);
+            $this->buildView($translation);
+        } else {
+            $this->buildAlternateView('editTranslation',array('language'=>$translation, 'errors'=>$errors));
+        }
     }
 }
