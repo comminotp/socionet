@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Jeff
- * Date: 26.03.2015
- * Time: 15:24
- */
-
 // Function for creating one select with many options automatically.
 function select($name, $list, $current, $attributes=null) {
     $text = '<select name="' . $name . '" ';
