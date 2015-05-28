@@ -36,17 +36,4 @@
 
             return $result;
         }
-        
-        function updateTranslation($idLanguage, $idText, $translation){
-
-        }
-        
-        function deleteTranslation($idLanguage, $idText) {
-            
-        }
-        
-        function getAllTranslationsFor($idText) {
-            
-        }
     }
-
