@@ -119,7 +119,7 @@ class AdminController extends Controller {
         
         $model = new SchedulesModel();
         
-        $lastID = $model->insertScheduleDescription('<idlanguage>', '<description>');
+        //$lastID = $model->insertScheduleDescription('<idlanguage>', '<description>');
         
         $this->buildView();
     }
@@ -130,37 +130,37 @@ class AdminController extends Controller {
     public function saveSchedule() {
         
         $arrayDays = array(
-	'Monday'  => (isset($_POST['day1']) ? true : false),
-	'Tuesday' => (isset($_POST['day2']) ? true : false),
-	'Wednesday' => (isset($_POST['day3']) ? true : false),
-	'Thursday' => (isset($_POST['day4'])? true : false),
-	'Friday' => (isset($_POST['day5']) ? true : false),
-	'Saturday' => (isset($_POST['day6']) ? true : false),
-	'Sunday' => (isset($_POST['day7'])? true : false)
+	'Monday'  => $this->request->paramExists('day1'),
+	'Tuesday' => $this->request->paramExists('day2'),
+	'Wednesday' => $this->request->paramExists('day3'),
+	'Thursday' => $this->request->paramExists('day4'),
+	'Friday' => $this->request->paramExists('day5'),
+	'Saturday' => $this->request->paramExists('day6'),
+	'Sunday' => $this->request->paramExists('day7')
         );
 	
         $stringDays = implode(",",array_keys($arrayDays, true));
-        if(isset($_POST['AllDay'])) {
+        if($this->request->paramExists('AllDay')) {
 	$startTime = "NULL";
 	$endTime = "NULL";
         }
         else {
-	$startTime = isset($_POST['TimeBegin']) ? $_POST['TimeBegin'] : null;
-	$endTime = isset($_POST['TimeEnd']) ? $_POST['TimeEnd'] : null;
+	$startTime = $this->request->paramExists('TimeBegin') ? $this->request->getParam('TimeBegin') : null;
+	$endTime = $this->request->paramExists('TimeEnd') ? $this->request->getParam('TimeEnd') : null;
         }
 
-        if(isset($_POST['AllYear'])) {
+        if($this->request->paramExists('AllYear')) {
                 $startDate = "NULL";
                 $endDate = "NULL";
         }
         else {
-                $startDate = isset($_POST['DateBegin']) ? $_POST['DateBegin'] : null;
-                $endDate = isset($_POST['DateEnd']) ? $_POST['DateEnd'] : null;
+                $startDate = $this->request->paramExists('DateBegin') ? $this->request->getParam('DateBegin') : null;
+                $endDate = $this->request->paramExists('DateEnd') ? $this->request->getParam('DateEnd') : null;
         }
 
-        $description = isset($_POST['description']) ? $_POST['description'] : null;
+        $description = $this->request->paramExists('description') ? $this->request->getParam('description') : null;
         
         $model = new SchedulesModel();
-        $model->insertSchedule($idInstitution, $stringDays, $startTime, $endTime, $startDate, $endDate, $description, $idLanguage);
+        $model->insertSchedule('1', $stringDays, $startTime, $endTime, $startDate, $endDate, $description, 'fr');
     }
 }
