@@ -1,3 +1,7 @@
+/**
+ * @author Jeff Muraro
+ */
+
 <?php $this->title = "Editer une traduction"; ?>
 
 <h1>Editer une traduction</h1>
